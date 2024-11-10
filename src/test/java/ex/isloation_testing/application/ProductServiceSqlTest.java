@@ -14,14 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-@Transactional
 class ProductServiceSqlTest {
 
     @Autowired
     private ProductService productService;
 
     @Test
-    @Sql("/product/ddl.sql")
+    @Sql(scripts = {"/product/truncate.sql", "/product/ddl.sql"})
     @DisplayName("전체 상품 목록을 조회한다")
     void getAllProducts() {
         List<Product> products = productService.getAllProducts();
@@ -34,7 +33,7 @@ class ProductServiceSqlTest {
     }
 
     @Test
-    @Sql("/product/ddl.sql")
+    @Sql(scripts = {"/product/truncate.sql", "/product/ddl.sql"})
     @DisplayName("ID로 특정 상품을 조회한다")
     void getProductById() {
         // when
@@ -46,7 +45,7 @@ class ProductServiceSqlTest {
     }
 
     @Test
-    @Sql("/product/ddl.sql")
+    @Sql(scripts = {"/product/truncate.sql", "/product/ddl.sql"})
     @DisplayName("존재하지 않는 상품 ID로 조회시 예외가 발생한다")
     void getProductById_NotFound() {
         assertThatThrownBy(() -> productService.getProductById(999L))
